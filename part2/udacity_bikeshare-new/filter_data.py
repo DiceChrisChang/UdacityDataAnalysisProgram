@@ -1,8 +1,6 @@
-
 # coding: utf-8
 
 # In[ ]:
-
 
 import numpy as np
 import pandas as pd
@@ -49,10 +47,12 @@ def data_analysis(data,two_choosen_parts):
     mode_name = data[two_choosen_parts].value_counts().first_valid_index()
     mode_count = data[two_choosen_parts].value_counts().iloc[0,]
     return mode_name,mode_count
+
 def trip_dutation(data):
     trip_dutation_sum = data['Trip Duration'].sum()
     trip_dutation_mean = data['Trip Duration'].mean()
     return trip_dutation_sum,trip_dutation_mean
+
 def user_analysis(data,three_parts_user):
     if three_parts_user == 'User Type'or three_parts_user == 'Gender':
         total_type_analysis = data[three_parts_user].value_counts()
@@ -64,25 +64,29 @@ def user_analysis(data,three_parts_user):
         return year_min,year_max,year_mode
 
 ########################### main ##############################
-# data = filter_data('Chicago', 'March', 'Monday')
-# print (data)
+
+
 # thwo_choosen_parts = ['Start Station','End Station']
 # data_analysis(data,'End Station')
 # trip_dutation(data)
 # three_parts_user = ['User Type','Gender','Birth Year']
 # user_analysis(data,'User Type')
 # seems like some city file don't have the user type
-
+global data
 def main ():
     while True:
         city = input('\nWhich city do you want to walk through ? Chicago, NewYorkCity, Washington \n')
         month = input('\nWhich month,January,February,March,Apri,May,June,July,Augest,September,October,November,December ? \n')
-        weeday = input('\nWhich weekday,Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
-        print(filter_data(city,month,weekday))
+        weekday = input('\nWhich weekday,Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
+        data = filter_data(city,month,weekday)
+        print(data.groupby(['Start Station','End Station']).agg({'Start Station':sum,'End Station':sum}))
+
 
 
 
         restart = input('\nWould you like to restar ? Enter yes or no.\n')
+        if restart.lower() != 'yes':
+            break
 
 if __name__ == "__main__":
     main()
