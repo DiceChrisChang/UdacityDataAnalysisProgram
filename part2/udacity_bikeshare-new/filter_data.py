@@ -65,7 +65,7 @@ def user_analysis(data,three_parts_user):
 
 ########################### main ##############################
 
-
+# print(data.groupby(['Start Station','End Station']).agg({'Start Station':sum,'End Station':sum}))
 # thwo_choosen_parts = ['Start Station','End Station']
 # data_analysis(data,'End Station')
 # trip_dutation(data)
@@ -75,11 +75,27 @@ def user_analysis(data,three_parts_user):
 global data
 def main ():
     while True:
-        city = input('\nWhich city do you want to walk through ? Chicago, NewYorkCity, Washington \n')
-        month = input('\nWhich month,January,February,March,Apri,May,June,July,Augest,September,October,November,December ? \n')
-        weekday = input('\nWhich weekday,Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
-        data = filter_data(city,month,weekday)
-        print(data.groupby(['Start Station','End Station']).agg({'Start Station':sum,'End Station':sum}))
+        def filter():
+        '''
+        get values from input and use filter_data to filter return a data seperate datetime
+        
+        '''
+            try:
+                city = input('\nWhich city do you want to walk through ? Chicago, NewYorkCity, Washington \n')
+                month = input('\nWhich month,January,February,March,Apri,May,June,July,Augest,September,October,November,December ? \n')
+                weekday = input('\nWhich weekday,Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
+                data = filter_data(city,month,weekday)
+            except:
+                print('There is something wrong in your input, plesase try again! ')
+                filter()
+            else:
+                return data
+        filter()
+
+
+
+
+
 
 
 
