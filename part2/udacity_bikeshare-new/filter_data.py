@@ -1,6 +1,3 @@
-# coding: utf-8
-
-# In[ ]:
 
 import numpy as np
 import pandas as pd
@@ -63,43 +60,80 @@ def user_analysis(data,three_parts_user):
         year_mode = data[three_parts_user].value_counts().first_valid_index()
         return year_min,year_max,year_mode
 
+def filters():
+    '''
+    get values from input and use filter_data to filter return a data seperate datetime
+    '''
+    try:
+        city = input('\nWhich city do you want to walk through ? Chicago, NewYorkCity, Washington \n')
+        month = input('\nWhich month January,February,March,Apri,May,June,July,Augest,September,October,November,December ? \n')
+        weekday = input('\nWhich weekday Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
+        data = filter_data(city,month,weekday)
+    except:
+        print('There is something wrong in your input, plesase try again! ')
+        filters()
+    else:
+        # data = filter_data(city,month,weekday)
+        return data
+
+def analysis_station():
+    try:
+        choose = input('\n Woule you like to watch data by start/end station or combine both, you can enter s for one or enter b for both? \n')
+        if choose == 's':
+            two_choosen_parts = input('\n input Start Station or End Station \n')
+            data_analysis(data,two_choosen_parts)
+        elif choose == 'b':
+            #### find from start station to end station the most popular trip ####
+            combine_station_data = data.groupby(['Start Station','End Station']).size() \
+            .reset_index(name='count').sort_values(by = ['count'], ascending = False).iloc[0,]
+    except:
+        print('There is something wrong in your input, plesase try again! ')
+        analysis_station()
+    else:
+        if choose == 's':
+            print('')
+        elif choose == 'b':
+            print('')
+
+def personal_info():
+    try:
+        three_parts_user = input('\n Which kind of data do you want from User Type, Gender, Birth Year ? \n')
+        user_analysis(data,three_parts_user)
+    except:
+        print('There is something wrong in your input, plesase try again! ')
+        personal_info()
+    else:
+        print(user_analysis(data,three_parts_user))
+        retry = input('\n Do you want to see other kinds of info ? Yes or No \n')
+        if retry == "Yes" :
+           personal_info()
+        else:
+            break
+
 ########################### main ##############################
 
 # print(data.groupby(['Start Station','End Station']).agg({'Start Station':sum,'End Station':sum}))
-# thwo_choosen_parts = ['Start Station','End Station']
-# data_analysis(data,'End Station')
-# trip_dutation(data)
+
+
 # three_parts_user = ['User Type','Gender','Birth Year']
 # user_analysis(data,'User Type')
 # seems like some city file don't have the user type
+
 global data
 def main ():
     while True:
-        def filter():
-        '''
-        get values from input and use filter_data to filter return a data seperate datetime
-        
-        '''
-            try:
-                city = input('\nWhich city do you want to walk through ? Chicago, NewYorkCity, Washington \n')
-                month = input('\nWhich month,January,February,March,Apri,May,June,July,Augest,September,October,November,December ? \n')
-                weekday = input('\nWhich weekday,Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
-                data = filter_data(city,month,weekday)
-            except:
-                print('There is something wrong in your input, plesase try again! ')
-                filter()
-            else:
-                return data
-        filter()
+        filters()
+        if data.empty:
+            print('This kind of date that you choosen is empty, please try again')
+            filters()
 
+        analysis_station()
 
+        print('I am going to show you the calculate  time of whole trip by bike ')
+        print(trip_dutation(data))
+        # data = filter_data('Chicago','March','Monday')
 
-
-
-
-
-
-
+        personal_info()
         restart = input('\nWould you like to restar ? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
