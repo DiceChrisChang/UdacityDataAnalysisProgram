@@ -97,7 +97,7 @@ def filters():
     return data,city
 
 def analysis_station(data):
-    # try:
+    try:
         choose = input('\nWoule you like to watch data by start/end station or combine both, you can enter s for one or enter b for both? \n')
         if choose == 's':
             two_choosen_parts = input('\ninput Start Station or End Station \n')
@@ -106,10 +106,10 @@ def analysis_station(data):
             #### find the most popular trip from start station to end station ####
             combine_station_data = data.groupby(['Start Station','End Station']).size() \
             .reset_index(name='count').sort_values(by = ['count'], ascending = False).iloc[0,]
-    # except:
-    #     print('There is something wrong in your input, plesase try again! ')
-    #     analysis_station(data)
-    # else:
+    except:
+        print('There is something wrong in your input, plesase try again! ')
+        analysis_station(data)
+    else:
         if choose == 's':
             print(data_analysis(data,two_choosen_parts))
         elif choose == 'b':
