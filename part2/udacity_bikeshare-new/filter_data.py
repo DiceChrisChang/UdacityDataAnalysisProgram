@@ -103,37 +103,37 @@ def filters():
     get values from input and use filter_data to filter return a data seperate datetime
     '''
     global data
-    # try:
-    city = input('\nWhich city do you want to walk through ? Chicago, NewYorkCity, Washington \n')
-    city = city.lower()
-    print('I am going to show you the most famous month, weekday and hour in this city.')
-    famous (city)
-    three_choices = input('\nWould you like to filter datas from months,weekdays,not at all or both, m for months, w for weekdays, n for not ar all, b for both, \n')
-    # make input check more comfortable
-    three_choices = three_choices.lower()
-    if three_choices == 'b':
-        month = input('\nWhich month January,February,March,April,May,June,July,Augest,September,October,November,December ? \n')
-        weekday = input('\nWhich weekday Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
-        weekday = weekday.lower()
-        month = month.lower()
-    elif three_choices == 'w':
-        weekday = input('\nWhich weekday Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
-        weekday = weekday.lower()
-        month = None
-    elif three_choices == 'm':
-        month = input('\nWhich month January,February,March,April,May,June,July,Augest,September,October,November,December ? \n')
-        month = month.lower()
-        weekday = None
-    elif three_choices == 'n':
-        month = weekday = 'all'
-    data = filter_data(city,month,weekday)
-    # except:
-    #     print('There is something wrong in your input, plesase try again! ')
-    #     filters()
-    # else:
-    if data.empty or data is None:
-        print('This kind of date that you choosen is empty, please try again')
+    try:
+        city = input('\nWhich city do you want to walk through ? Chicago, NewYorkCity, Washington \n')
+        city = city.lower()
+        print('I am going to show you the most famous month, weekday and hour in this city.')
+        famous (city)
+        three_choices = input('\nWould you like to filter datas from months,weekdays,not at all or both, m for months, w for weekdays, n for not ar all, b for both, \n')
+        # make input check more comfortable
+        three_choices = three_choices.lower()
+        if three_choices == 'b':
+            month = input('\nWhich month January,February,March,April,May,June,July,Augest,September,October,November,December ? \n')
+            weekday = input('\nWhich weekday Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
+            weekday = weekday.lower()
+            month = month.lower()
+        elif three_choices == 'w':
+            weekday = input('\nWhich weekday Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday \n')
+            weekday = weekday.lower()
+            month = None
+        elif three_choices == 'm':
+            month = input('\nWhich month January,February,March,April,May,June,July,Augest,September,October,November,December ? \n')
+            month = month.lower()
+            weekday = None
+        elif three_choices == 'n':
+            month = weekday = 'all'
+        data = filter_data(city,month,weekday)
+    except:
+        print('Sorry, there is something wrong in your input, plesase try again! ')
         filters()
+    else:
+        if data.empty or data is None:
+            print('This kind of date that you choosen is empty, please try again')
+            filters()
 
 
     return data,city
@@ -148,8 +148,8 @@ def analysis_station(data):
             data_analysis(data,two_choosen_parts)
         elif choose == 'b':
             #### find the most popular trip from start station to end station ####
-            combine_station_data = ['the hostest trip',data.groupby(['Start Station','End Station']).size() \
-            .reset_index(name='count').sort_values(by = ['count'], ascending = False).iloc[0,]]
+            combine_station_data = data.groupby(['Start Station','End Station']).size() \
+            .reset_index(name='count').sort_values(by = ['count'], ascending = False).iloc[0,]
     except:
         print('There is something wrong in your input, plesase try again! ')
         analysis_station(data)
